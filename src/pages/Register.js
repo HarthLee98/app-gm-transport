@@ -9,7 +9,7 @@ import {
   Image,
   Popup,
 } from 'semantic-ui-react'
-import { createUser } from '../store/actions/users'
+import { createLoginUser } from '../store/actions/users'
 import logo from '../images/logo-gmt.png'
 
 function Register() {
@@ -40,7 +40,7 @@ function Register() {
     const item = { name, email, password }
 
     try {
-      await createUser(item)
+      await createLoginUser(item)
       setSuccess(true)
       setError('')
     } catch (err) {
