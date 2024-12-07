@@ -10,10 +10,13 @@ import {
 } from 'semantic-ui-react'
 import logo from '../images/logo-gmt.png' // Asegúrate de que la ruta sea correcta
 
-function Login() {
+function Register() {
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [emailError, setEmailError] = useState(false)
+  const [passwordError, setPasswordError] = useState(false)
 
   const handleEmailChange = (e) => {
     const value = e.target.value
@@ -24,8 +27,30 @@ function Login() {
     setEmailError(!emailRegex.test(value))
   }
 
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value)
+
+    // Validar que las contraseñas coincidan
+    setPasswordError(e.target.value !== confirmPassword)
+  }
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value)
+
+    // Validar que las contraseñas coincidan
+    setPasswordError(password !== e.target.value)
+  }
+
   const handleSubmit = () => {
-    if (!emailError && email && password) {
+    if (
+      !emailError &&
+      !passwordError &&
+      name &&
+      email &&
+      password &&
+      confirmPassword
+    ) {
+      console.log('Nombre:', name)
       console.log('Correo:', email)
       console.log('Contraseña:', password)
     } else {
@@ -46,15 +71,25 @@ function Login() {
         />
         {/* Encabezado */}
         <Header as="h2" color="blue" textAlign="center">
-          Iniciar Sesión
+          Registro de Usuario
         </Header>
         {/* Formulario */}
         <Form size="large" onSubmit={(e) => e.preventDefault()}>
           <Segment stacked>
-            {/* Input del correo */}
+            {/* Nombre */}
             <Form.Input
               fluid
               icon="user"
+              iconPosition="left"
+              placeholder="Nombre"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
+            />
+            {/* Email */}
+            <Form.Input
+              fluid
+              icon="mail"
               iconPosition="left"
               placeholder="Correo Electrónico"
               type="email"
@@ -68,7 +103,7 @@ function Login() {
                 }
               }
             />
-            {/* Input de la contraseña */}
+            {/* Contraseña */}
             <Form.Input
               fluid
               icon="lock"
@@ -76,8 +111,25 @@ function Login() {
               placeholder="Contraseña"
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={handlePasswordChange}
               required
+            />
+            {/* Confirmar Contraseña */}
+            <Form.Input
+              fluid
+              icon="lock"
+              iconPosition="left"
+              placeholder="Repetir Contraseña"
+              type="password"
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
+              required
+              error={
+                passwordError && {
+                  content: 'Las contraseñas no coinciden.',
+                  pointing: 'below',
+                }
+              }
             />
             {/* Botón de enviar */}
             <Button
@@ -85,18 +137,25 @@ function Login() {
               fluid
               size="large"
               onClick={handleSubmit}
-              disabled={emailError || !email || !password}
+              disabled={
+                emailError ||
+                passwordError ||
+                !name ||
+                !email ||
+                !password ||
+                !confirmPassword
+              }
             >
-              Iniciar Sesión
+              Registrarse
             </Button>
           </Segment>
         </Form>
         <Message>
-          ¿No tienes una cuenta? <a href="/register">Regístrate</a>
+          ¿Ya tienes una cuenta? <a href="/login">Inicia Sesión</a>
         </Message>
       </Grid.Column>
     </Grid>
   )
 }
 
-export default Login
+export default Register
