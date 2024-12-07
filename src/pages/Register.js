@@ -7,9 +7,10 @@ import {
   Segment,
   Message,
   Image,
+  Popup,
 } from 'semantic-ui-react'
 import { createUser } from '../store/actions/users'
-import logo from '../images/logo-gmt.png' // Ajusta la ruta según tu proyecto
+import logo from '../images/logo-gmt.png'
 
 function Register() {
   const [name, setName] = useState('')
@@ -18,6 +19,17 @@ function Register() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+  const [showPasswordPopup, setShowPasswordPopup] = useState(false)
+
+  // Función para verificar si el formulario es válido
+  const isFormValid = () => {
+    return (
+      name.trim() !== '' &&
+      email.trim() !== '' &&
+      password.trim() !== '' &&
+      confirmPassword.trim() !== ''
+    )
+  }
 
   const handleSubmit = async () => {
     if (password !== confirmPassword) {
@@ -25,7 +37,7 @@ function Register() {
       return
     }
 
-    const item = { name, email, password } // Agrupamos los datos en "item"
+    const item = { name, email, password }
 
     try {
       await createUser(item)
@@ -70,15 +82,24 @@ function Register() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <Form.Input
-              fluid
-              icon="lock"
-              iconPosition="left"
-              placeholder="Contraseña"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
+            <Popup
+              content="La contraseña debe tener al menos 8 caracteres."
+              open={showPasswordPopup}
+              position="right center"
+              trigger={
+                <Form.Input
+                  fluid
+                  icon="lock"
+                  iconPosition="left"
+                  placeholder="Contraseña"
+                  type="password"
+                  value={password}
+                  onFocus={() => setShowPasswordPopup(true)} // Muestra el pop-up
+                  onBlur={() => setShowPasswordPopup(false)} // Oculta el pop-up
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                />
+              }
             />
             <Form.Input
               fluid
@@ -90,7 +111,13 @@ function Register() {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
-            <Button color="blue" fluid size="large" onClick={handleSubmit}>
+            <Button
+              color="blue"
+              fluid
+              size="large"
+              onClick={handleSubmit}
+              disabled={!isFormValid()}
+            >
               Registrarse
             </Button>
           </Segment>
