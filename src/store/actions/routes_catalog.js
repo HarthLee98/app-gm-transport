@@ -40,6 +40,44 @@ export const createRoute = async (item) => {
   }
 }
 
+export const updateRoute = async (item) => {
+  try {
+    const token = localStorage.getItem('token')
+    const response = await fetch(`${API_URL}/route/update_route`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(item),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: errorData.message || 'Error al actualizar la ruta.',
+      })
+      throw new Error(errorData.message || 'Error al actualizar la ruta.')
+    }
+
+    const data = await response.json()
+
+    // Mostrar mensaje de éxito
+    Swal.fire({
+      icon: 'success',
+      title: 'Éxito',
+      text: 'Ruta actualizada exitosamente.',
+    })
+
+    return data
+  } catch (error) {
+    console.error('Error al actualizar la ruta:', error.message)
+    throw error
+  }
+}
+
 export const getRoutes = async () => {
   try {
     const token = localStorage.getItem('token')

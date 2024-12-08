@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Header, Segment, Grid, Form, Input, Button } from 'semantic-ui-react'
-import { createRoute } from '../store/actions/routes_catalog'
+import { createRoute, updateRoute } from '../store/actions/routes_catalog'
 import PageLayout from '../components/PageLayout'
 
 function RoutesPage() {
@@ -13,15 +13,11 @@ function RoutesPage() {
     name: routeData?.name || '',
   })
   const [errors, setErrors] = useState({}) // Estado para almacenar errores
-
-  const isEditMode = !!routeData // Modo edición
+  const [isEditMode, setIsEditMode] = useState(!!routeData)
 
   useEffect(() => {
     if (routeData) {
-      setFormData({
-        code: routeData.code || '',
-        name: routeData.name || '',
-      })
+      setFormData(routeData)
     }
   }, [routeData])
 
@@ -48,8 +44,11 @@ function RoutesPage() {
     } else {
       try {
         if (isEditMode) {
-          // Aquí puedes manejar la lógica de edición
-          console.log('Actualizar ruta:', formData)
+          // Llamar a la acción para actualizar la ruta
+          await updateRoute(formData)
+          console.log('Ruta actualizada:', formData)
+          setFormData({ code: '', name: '' }) // Limpia los campos después de actualizar
+          setIsEditMode(false) // Salir del modo de edición
         } else {
           await createRoute(formData) // Llama a la acción para crear una nueva ruta
           setFormData({ code: '', name: '' }) // Limpia los campos del formulario
