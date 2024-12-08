@@ -278,14 +278,16 @@ const GenerateBudgetPage = () => {
             </Grid.Column>
           </Grid>
 
-          <Button
-            color="purple"
-            onClick={handleSubmit}
-            disabled={isSubmitDisabled} // Botón deshabilitado hasta que el formulario sea válido
-            style={{ marginTop: '20px' }}
-          >
-            Generar Presupuesto
-          </Button>
+          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <Button
+              color="purple"
+              onClick={handleSubmit}
+              disabled={isSubmitDisabled} // Botón deshabilitado hasta que el formulario sea válido
+              style={{ marginTop: '20px' }}
+            >
+              Generar Presupuesto
+            </Button>
+          </div>
 
           {success && (
             <Message
