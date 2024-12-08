@@ -71,7 +71,7 @@ function Home() {
           {/* Catálogo de Precios de Combustible */}
           <Grid.Column textAlign="center">
             <div
-              onClick={() => navigate('/fuel_catalog')}
+              onClick={() => navigate('/fuel_prices_catalog')}
               style={{ cursor: 'pointer' }}
             >
               <Icon name="tint" size="huge" color="black" />
@@ -93,7 +93,7 @@ function Home() {
           {/* Reportes */}
           <Grid.Column textAlign="center">
             <div
-              onClick={() => navigate('/reportes')}
+              onClick={() => navigate('/reports')}
               style={{ cursor: 'pointer' }}
             >
               <Icon name="chart bar" size="huge" color="red" />
