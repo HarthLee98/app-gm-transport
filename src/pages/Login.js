@@ -17,6 +17,8 @@ function Login() {
   const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState(false)
   const [error, setError] = useState('')
+  const [emailTouched, setEmailTouched] = useState(false)
+
   const navigate = useNavigate()
 
   const handleEmailChange = (e) => {
@@ -65,9 +67,12 @@ function Login() {
               type="email"
               value={email}
               onChange={handleEmailChange}
+              onBlur={() => setEmailTouched(true)} // Cambia el estado al perder el foco
               required
               error={
-                emailError && {
+                emailError &&
+                emailTouched && {
+                  // Muestra el mensaje solo si el campo ha sido tocado
                   content: 'Por favor, escribe un correo válido.',
                   pointing: 'below',
                 }

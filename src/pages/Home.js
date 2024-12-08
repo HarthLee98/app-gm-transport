@@ -6,8 +6,10 @@ function Home() {
   const navigate = useNavigate()
 
   const handleLogout = () => {
-    // Aquí puedes limpiar los datos del usuario si estás manejando sesiones o tokens
-    navigate('/') // Redirige al login
+    // Eliminar el token de localStorage
+    localStorage.removeItem('token')
+    // Redirigir al login
+    navigate('/login')
   }
 
   return (
