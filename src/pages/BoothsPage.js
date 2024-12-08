@@ -5,6 +5,7 @@ import PageLayout from '../components/PageLayout'
 function BoothsPage() {
   return (
     <PageLayout>
+      <br />
       <Header as="h1" color="teal">
         Catálogo de Casetas
       </Header>

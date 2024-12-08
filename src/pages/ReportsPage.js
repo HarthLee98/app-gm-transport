@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { Header, Tab, Table, Popup, Icon } from 'semantic-ui-react'
+import { useNavigate } from 'react-router-dom'
 import { getRoutes } from '../store/actions/routes_catalog' // Importa la acción
 import PageLayout from '../components/PageLayout'
 
 function ReportsPage() {
   const [routes, setRoutes] = useState([]) // Estado para almacenar las rutas
+  const navigate = useNavigate() // Hook para redirigir
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,6 +35,7 @@ function ReportsPage() {
         {routes.map((route) => (
           <Table.Row key={route.id}>
             <Table.Cell>
+              {/* Botón de Editar */}
               <Popup
                 content="Editar"
                 trigger={
@@ -40,10 +43,11 @@ function ReportsPage() {
                     name="edit"
                     color="blue"
                     style={{ cursor: 'pointer', marginRight: '10px' }}
-                    onClick={() => console.log('Editar:', route.id)} // Aquí pondrás la función de editar
+                    onClick={() => navigate('/routes', { state: { route } })} // Redirige con datos de la ruta
                   />
                 }
               />
+              {/* Botón de Eliminar */}
               <Popup
                 content="Eliminar"
                 trigger={
@@ -75,6 +79,7 @@ function ReportsPage() {
 
   return (
     <PageLayout>
+      <br />
       <Header as="h1" color="red">
         Reportes
       </Header>

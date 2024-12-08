@@ -91,6 +91,7 @@ const GenerateBudgetPage = () => {
 
   return (
     <PageLayout>
+      <br />
       <Header as="h1" color="purple">
         Generar Presupuesto
       </Header>

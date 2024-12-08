@@ -10,8 +10,26 @@ const PageLayout = ({ children }) => {
     navigate('/login') // Redirige al login
   }
 
+  const goToHome = () => {
+    navigate('/home') // Redirige a la página de inicio
+  }
+
   return (
     <Container style={{ position: 'relative', padding: '20px' }}>
+      {/* Botón de ir a la página de inicio */}
+      <Button
+        color="green"
+        onClick={goToHome}
+        style={{
+          position: 'absolute',
+          top: '20px',
+          left: '20px',
+          zIndex: 1,
+        }}
+      >
+        Inicio
+      </Button>
+
       {/* Botón de cerrar sesión */}
       <Button
         color="blue"
@@ -25,6 +43,7 @@ const PageLayout = ({ children }) => {
       >
         Cerrar Sesión
       </Button>
+
       {/* Contenido de la página */}
       {children}
     </Container>

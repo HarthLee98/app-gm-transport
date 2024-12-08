@@ -1,14 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { Header, Segment, Grid, Form, Input, Button } from 'semantic-ui-react'
 import { createRoute } from '../store/actions/routes_catalog'
 import PageLayout from '../components/PageLayout'
 
 function RoutesPage() {
+  const location = useLocation()
+  const routeData = location.state?.route // Datos de la ruta para edición
+
   const [formData, setFormData] = useState({
-    code: '',
-    name: '',
+    code: routeData?.code || '',
+    name: routeData?.name || '',
   })
   const [errors, setErrors] = useState({}) // Estado para almacenar errores
+
+  const isEditMode = !!routeData // Modo edición
+
+  useEffect(() => {
+    if (routeData) {
+      setFormData({
+        code: routeData.code || '',
+        name: routeData.name || '',
+      })
+    }
+  }, [routeData])
 
   const handleChange = (e, { name, value }) => {
     setFormData({ ...formData, [name]: value })
@@ -32,8 +47,13 @@ function RoutesPage() {
       setErrors(validationErrors)
     } else {
       try {
-        await createRoute(formData) // Llama a la acción con los datos del formulario
-        setFormData({ code: '', name: '' }) // Limpia los campos del formulario
+        if (isEditMode) {
+          // Aquí puedes manejar la lógica de edición
+          console.log('Actualizar ruta:', formData)
+        } else {
+          await createRoute(formData) // Llama a la acción para crear una nueva ruta
+          setFormData({ code: '', name: '' }) // Limpia los campos del formulario
+        }
       } catch (error) {
         console.error('Error al guardar la ruta:', error.message)
       }
@@ -42,6 +62,7 @@ function RoutesPage() {
 
   return (
     <PageLayout>
+      <br />
       <Header as="h1" color="blue">
         Catálogo de Rutas
       </Header>
@@ -97,13 +118,15 @@ function RoutesPage() {
             </Grid.Column>
           </Grid>
 
-          <Button
-            color="blue"
-            onClick={handleSubmit}
-            style={{ marginTop: '20px' }}
-          >
-            Guardar Ruta
-          </Button>
+          <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <Button
+              color="blue"
+              onClick={handleSubmit}
+              style={{ marginTop: '20px' }}
+            >
+              {isEditMode ? 'Actualizar Ruta' : 'Guardar Ruta'}
+            </Button>
+          </div>
         </Form>
       </Segment>
     </PageLayout>

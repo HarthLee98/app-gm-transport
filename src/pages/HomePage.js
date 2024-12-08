@@ -8,6 +8,7 @@ function HomePage() {
 
   return (
     <PageLayout>
+      <br />
       <Header as="h1" color="blue" textAlign="center">
         Bienvenido a GM Transport
       </Header>
