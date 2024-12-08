@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Container,
   Header,
@@ -22,6 +22,7 @@ const GenerateBudgetPage = () => {
   })
   const [errors, setErrors] = useState({})
   const [success, setSuccess] = useState(false)
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(true) // Estado para deshabilitar el botón
 
   const travelTypeOpts = [
     { text: 'Una Dirección', value: 'Una Dirección' },
@@ -81,6 +82,12 @@ const GenerateBudgetPage = () => {
       // Aquí puedes enviar los datos al backend o procesarlos como sea necesario
     }
   }
+
+  useEffect(() => {
+    const validationErrors = validateFields()
+    setIsSubmitDisabled(Object.keys(validationErrors).length > 0)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData])
 
   return (
     <Container textAlign="center" style={{ marginTop: '50px' }}>
@@ -244,6 +251,7 @@ const GenerateBudgetPage = () => {
           <Button
             color="purple"
             onClick={handleSubmit}
+            disabled={isSubmitDisabled} // Botón deshabilitado hasta que el formulario sea válido
             style={{ marginTop: '20px' }}
           >
             Generar Presupuesto
