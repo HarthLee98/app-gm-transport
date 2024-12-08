@@ -78,6 +78,39 @@ export const updateRoute = async (item) => {
   }
 }
 
+export const deleteRoute = async (id) => {
+  try {
+    const token = localStorage.getItem('token')
+    const response = await fetch(`${API_URL}/route/delete_route/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: errorData.message || 'Error al eliminar la ruta.',
+      })
+      throw new Error(errorData.message || 'Error al eliminar la ruta.')
+    }
+
+    Swal.fire({
+      icon: 'success',
+      title: 'Éxito',
+      text: 'Ruta eliminada exitosamente.',
+    })
+
+    return true
+  } catch (error) {
+    console.error('Error al eliminar la ruta:', error.message)
+    throw error
+  }
+}
+
 export const getRoutes = async () => {
   try {
     const token = localStorage.getItem('token')
