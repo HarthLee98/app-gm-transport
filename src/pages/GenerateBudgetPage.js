@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import {
   Header,
   Segment,
@@ -10,6 +10,7 @@ import {
   Message,
 } from 'semantic-ui-react'
 import PageLayout from '../components/PageLayout'
+import { getRoutes } from '../store/actions/routes_catalog'
 
 const GenerateBudgetPage = () => {
   const [formData, setFormData] = useState({
@@ -23,6 +24,29 @@ const GenerateBudgetPage = () => {
   const [errors, setErrors] = useState({})
   const [success, setSuccess] = useState(false)
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(true) // Estado para deshabilitar el botón
+  const [routes, setRoutes] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await getRoutes()
+        setRoutes(data) // Actualiza el estado con las rutas obtenidas
+      } catch (error) {
+        console.error('Error al obtener rutas:', error.message)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+  const routesOpts = useMemo(() => {
+    return routes.map((r) => {
+      return {
+        value: r.id,
+        text: r.name,
+      }
+    })
+  }, [routes])
 
   const travelTypeOpts = [
     { text: 'Una Dirección', value: 'Una Dirección' },
@@ -36,16 +60,14 @@ const GenerateBudgetPage = () => {
 
   const validateFields = () => {
     const newErrors = {}
+
     if (!formData.travel_type) {
       newErrors.travel_type = 'El tipo de viaje es obligatorio.'
     }
-    if (!formData.one_way_route.trim()) {
+    if (!formData.one_way_route) {
       newErrors.one_way_route = 'La ruta de ida es obligatoria.'
     }
-    if (
-      formData.travel_type === 'Viaje Redondo' &&
-      !formData.return_route.trim()
-    ) {
+    if (formData.travel_type === 'Viaje Redondo' && !formData.return_route) {
       newErrors.return_route =
         'La ruta de regreso es obligatoria para un viaje redondo.'
     }
@@ -67,6 +89,7 @@ const GenerateBudgetPage = () => {
       newErrors.quantity_passengers =
         'La cantidad de pasajeros debe ser mayor a 0.'
     }
+
     return newErrors
   }
 
@@ -129,8 +152,11 @@ const GenerateBudgetPage = () => {
             <Grid.Column>
               <Form.Field error={!!errors.one_way_route}>
                 <label>Ruta de Ida</label>
-                <Input
-                  placeholder="Ingresa la ruta de ida"
+                <Dropdown
+                  placeholder="Selecciona la ruta de ida"
+                  fluid
+                  selection
+                  options={routesOpts} // Opciones obtenidas del estado de rutas
                   name="one_way_route"
                   value={formData.one_way_route}
                   onChange={handleChange}
@@ -153,12 +179,15 @@ const GenerateBudgetPage = () => {
             <Grid.Column>
               <Form.Field error={!!errors.return_route}>
                 <label>Ruta de Regreso (si aplica)</label>
-                <Input
-                  placeholder="Ingresa la ruta de regreso"
+                <Dropdown
+                  placeholder="Selecciona la ruta de regreso"
+                  fluid
+                  selection
+                  options={routesOpts} // Opciones obtenidas del estado de rutas
                   name="return_route"
                   value={formData.return_route}
                   onChange={handleChange}
-                  disabled={formData.travel_type !== 'Viaje Redondo'}
+                  disabled={formData.travel_type !== 'Viaje Redondo'} // Deshabilitado si no es viaje redondo
                 />
                 {errors.return_route && (
                   <div
