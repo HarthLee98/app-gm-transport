@@ -8,7 +8,7 @@ import {
   Dropdown,
   Input,
   Button,
-  Message
+  Message,
 } from 'semantic-ui-react'
 
 const GenerateBudgetPage = () => {
@@ -18,6 +18,7 @@ const GenerateBudgetPage = () => {
     return_route: '',
     departure_date_time: '',
     return_date_time: '',
+    quantity_passengers: '',
   })
   const [errors, setErrors] = useState({})
   const [success, setSuccess] = useState(false)
@@ -57,6 +58,13 @@ const GenerateBudgetPage = () => {
     ) {
       newErrors.return_date_time =
         'La fecha y hora de regreso son obligatorias para un viaje redondo.'
+    }
+    if (!formData.quantity_passengers || isNaN(formData.quantity_passengers)) {
+      newErrors.quantity_passengers =
+        'La cantidad de pasajeros es obligatoria y debe ser un número.'
+    } else if (formData.quantity_passengers <= 0) {
+      newErrors.quantity_passengers =
+        'La cantidad de pasajeros debe ser mayor a 0.'
     }
     return newErrors
   }
@@ -202,6 +210,31 @@ const GenerateBudgetPage = () => {
                     }}
                   >
                     {errors.return_date_time}
+                  </div>
+                )}
+              </Form.Field>
+            </Grid.Column>
+
+            {/* Cantidad de Pasajeros */}
+            <Grid.Column>
+              <Form.Field error={!!errors.quantity_passengers}>
+                <label>Cantidad de Pasajeros</label>
+                <Input
+                  type="number"
+                  placeholder="Ingresa la cantidad de pasajeros"
+                  name="quantity_passengers"
+                  value={formData.quantity_passengers}
+                  onChange={handleChange}
+                />
+                {errors.quantity_passengers && (
+                  <div
+                    style={{
+                      color: 'red',
+                      marginTop: '5px',
+                      fontSize: '0.9em',
+                    }}
+                  >
+                    {errors.quantity_passengers}
                   </div>
                 )}
               </Form.Field>
