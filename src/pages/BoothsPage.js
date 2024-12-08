@@ -1,14 +1,15 @@
 import React from 'react'
-import { Container, Header } from 'semantic-ui-react'
+import { Header } from 'semantic-ui-react'
+import PageLayout from '../components/PageLayout'
 
 function BoothsPage() {
   return (
-    <Container textAlign="center" style={{ marginTop: '50px' }}>
+    <PageLayout>
       <Header as="h1" color="teal">
         Catálogo de Casetas
       </Header>
       <p>Contenido del Catálogo de Casetas.</p>
-    </Container>
+    </PageLayout>
   )
 }
 

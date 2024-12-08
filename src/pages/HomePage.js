@@ -1,36 +1,16 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  Button,
-  Container,
-  Header,
-  Grid,
-  Icon,
-  Segment,
-} from 'semantic-ui-react'
+import { Header, Grid, Icon, Segment } from 'semantic-ui-react'
+import PageLayout from '../components/PageLayout'
 
 function HomePage() {
   const navigate = useNavigate()
 
-  const handleLogout = () => {
-    // Eliminar el token de localStorage
-    localStorage.removeItem('token')
-    // Redirigir al login
-    navigate('/login')
-  }
-
   return (
-    <Container textAlign="center" style={{ marginTop: '50px' }}>
-      <Header as="h1" color="blue">
+    <PageLayout>
+      <Header as="h1" color="blue" textAlign="center">
         Bienvenido a GM Transport
       </Header>
-      <Button
-        color="blue"
-        onClick={handleLogout}
-        style={{ marginBottom: '20px' }}
-      >
-        Cerrar Sesión
-      </Button>
 
       {/* Grid de Catálogos */}
       <Segment style={{ marginTop: '50px', padding: '20px' }}>
@@ -102,7 +82,7 @@ function HomePage() {
           </Grid.Column>
         </Grid>
       </Segment>
-    </Container>
+    </PageLayout>
   )
 }
 

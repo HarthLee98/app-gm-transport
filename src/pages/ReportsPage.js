@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Header, Tab, Table } from 'semantic-ui-react'
+import { Header, Tab, Table } from 'semantic-ui-react'
 import { getRoutes } from '../store/actions/routes_catalog' // Importa la acción
+import PageLayout from '../components/PageLayout'
 
 function ReportsPage() {
   const [routes, setRoutes] = useState([]) // Estado para almacenar las rutas
@@ -42,20 +43,20 @@ function ReportsPage() {
 
   const panes = [
     { menuItem: 'Rutas', render: () => <>{routesPane}</> },
-    { menuItem: 'Casetas', render: () => (<></>) },
-    { menuItem: 'Unidades', render: () => (<></>) },
-    { menuItem: 'Precios de combustible', render: () => (<></>) },
-    { menuItem: 'Presupuestos', render: () => (<></>) },
+    { menuItem: 'Casetas', render: () => <></> },
+    { menuItem: 'Unidades', render: () => <></> },
+    { menuItem: 'Precios de combustible', render: () => <></> },
+    { menuItem: 'Presupuestos', render: () => <></> },
     // Puedes agregar más pestañas aquí como necesites
   ]
 
   return (
-    <Container textAlign="center" style={{ marginTop: '50px' }}>
+    <PageLayout>
       <Header as="h1" color="red">
         Reportes
       </Header>
       <Tab panes={panes} menu={{ secondary: true, pointing: true }} />
-    </Container>
+    </PageLayout>
   )
 }
 

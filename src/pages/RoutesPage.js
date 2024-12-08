@@ -1,14 +1,7 @@
 import React, { useState } from 'react'
-import {
-  Container,
-  Header,
-  Segment,
-  Grid,
-  Form,
-  Input,
-  Button,
-} from 'semantic-ui-react'
+import { Header, Segment, Grid, Form, Input, Button } from 'semantic-ui-react'
 import { createRoute } from '../store/actions/routes_catalog'
+import PageLayout from '../components/PageLayout'
 
 function RoutesPage() {
   const [formData, setFormData] = useState({
@@ -48,7 +41,7 @@ function RoutesPage() {
   }
 
   return (
-    <Container textAlign="center" style={{ marginTop: '50px' }}>
+    <PageLayout>
       <Header as="h1" color="blue">
         Catálogo de Rutas
       </Header>
@@ -113,7 +106,7 @@ function RoutesPage() {
           </Button>
         </Form>
       </Segment>
-    </Container>
+    </PageLayout>
   )
 }
 

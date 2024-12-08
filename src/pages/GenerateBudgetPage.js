@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import {
-  Container,
   Header,
   Segment,
   Grid,
@@ -10,6 +9,7 @@ import {
   Button,
   Message,
 } from 'semantic-ui-react'
+import PageLayout from '../components/PageLayout'
 
 const GenerateBudgetPage = () => {
   const [formData, setFormData] = useState({
@@ -90,7 +90,7 @@ const GenerateBudgetPage = () => {
   }, [formData])
 
   return (
-    <Container textAlign="center" style={{ marginTop: '50px' }}>
+    <PageLayout>
       <Header as="h1" color="purple">
         Generar Presupuesto
       </Header>
@@ -267,7 +267,7 @@ const GenerateBudgetPage = () => {
           )}
         </Form>
       </Segment>
-    </Container>
+    </PageLayout>
   )
 }
 
