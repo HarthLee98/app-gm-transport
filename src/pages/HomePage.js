@@ -9,7 +9,7 @@ import {
   Segment,
 } from 'semantic-ui-react'
 
-function Home() {
+function HomePage() {
   const navigate = useNavigate()
 
   const handleLogout = () => {
@@ -38,7 +38,7 @@ function Home() {
           {/* Catálogo de Rutas */}
           <Grid.Column textAlign="center">
             <div
-              onClick={() => navigate('/routes_catalog')}
+              onClick={() => navigate('/routes')}
               style={{ cursor: 'pointer' }}
             >
               <Icon name="road" size="huge" color="blue" />
@@ -49,7 +49,7 @@ function Home() {
           {/* Catálogo de Casetas */}
           <Grid.Column textAlign="center">
             <div
-              onClick={() => navigate('/booths_catalog')}
+              onClick={() => navigate('/booths')}
               style={{ cursor: 'pointer' }}
             >
               <Icon name="building" size="huge" color="teal" />
@@ -60,7 +60,7 @@ function Home() {
           {/* Catálogo de Unidades */}
           <Grid.Column textAlign="center">
             <div
-              onClick={() => navigate('/units_catalog')}
+              onClick={() => navigate('/units')}
               style={{ cursor: 'pointer' }}
             >
               <Icon name="truck" size="huge" color="orange" />
@@ -71,7 +71,7 @@ function Home() {
           {/* Catálogo de Precios de Combustible */}
           <Grid.Column textAlign="center">
             <div
-              onClick={() => navigate('/fuel_prices_catalog')}
+              onClick={() => navigate('/fuel_prices')}
               style={{ cursor: 'pointer' }}
             >
               <Icon name="tint" size="huge" color="black" />
@@ -106,4 +106,4 @@ function Home() {
   )
 }
 
-export default Home
+export default HomePage

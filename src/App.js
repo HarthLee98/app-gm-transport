@@ -2,13 +2,13 @@ import React from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import Login from './pages/Login'
 import Register from './pages/Register'
-import Home from './pages/Home'
-import RoutesCatalog from './pages/RoutesCatalog'
-import BoothsCatalog from './pages/BoothsCatalog'
-import UnitsCatalog from './pages/UnitsCatalog'
-import FuelPricesCatalog from './pages/FuelPricesCatalog'
-import GenerateBudget from './pages/GenerateBudget'
-import Reports from './pages/Reports'
+import HomePage from './pages/HomePage'
+import RoutesPage from './pages/RoutesPage'
+import BoothsPage from './pages/BoothsPage'
+import UnitsPage from './pages/UnitsPage'
+import FuelPricesPage from './pages/FuelPricesPage'
+import GenerateBudgetPage from './pages/GenerateBudgetPage'
+import ReportsPage from './pages/ReportsPage'
 import ProtectedRoute from './components/ProtectedRoute'
 
 function App() {
@@ -20,46 +20,46 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Login />} />
 
-        {/* Ruta protegida para Home */}
+        {/* Ruta protegida para HomePage */}
         <Route
           path="/home"
           element={
             <ProtectedRoute>
-              <Home />
+              <HomePage />
             </ProtectedRoute>
           }
         />
 
         {/* Rutas protegidas para los catálogos */}
         <Route
-          path="/routes_catalog"
+          path="/routes"
           element={
             <ProtectedRoute>
-              <RoutesCatalog />
+              <RoutesPage />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/booths_catalog"
+          path="/booths"
           element={
             <ProtectedRoute>
-              <BoothsCatalog />
+              <BoothsPage />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/units_catalog"
+          path="/units"
           element={
             <ProtectedRoute>
-              <UnitsCatalog />
+              <UnitsPage />
             </ProtectedRoute>
           }
         />
         <Route
-          path="/fuel_prices_catalog"
+          path="/fuel_prices"
           element={
             <ProtectedRoute>
-              <FuelPricesCatalog />
+              <FuelPricesPage />
             </ProtectedRoute>
           }
         />
@@ -67,7 +67,7 @@ function App() {
           path="/generate_budget"
           element={
             <ProtectedRoute>
-              <GenerateBudget />
+              <GenerateBudgetPage />
             </ProtectedRoute>
           }
         />
@@ -75,7 +75,7 @@ function App() {
           path="/reports"
           element={
             <ProtectedRoute>
-              <Reports />
+              <ReportsPage />
             </ProtectedRoute>
           }
         />

@@ -10,7 +10,7 @@ import {
   Button,
 } from 'semantic-ui-react'
 
-const GenerateBudget = () => {
+const GenerateBudgetPage = () => {
   const [formData, setFormData] = useState({
     travel_type: '',
     one_way_route: '',
@@ -125,4 +125,4 @@ const GenerateBudget = () => {
   )
 }
 
-export default GenerateBudget
+export default GenerateBudgetPage

@@ -1,15 +1,15 @@
 import React from 'react'
 import { Container, Header } from 'semantic-ui-react'
 
-function BoothsCatalog() {
+function UnitsPage() {
   return (
     <Container textAlign="center" style={{ marginTop: '50px' }}>
-      <Header as="h1" color="teal">
-        Catálogo de Casetas
+      <Header as="h1" color="orange">
+        Catálogo de Unidades
       </Header>
-      <p>Contenido del Catálogo de Casetas.</p>
+      <p>Contenido del Catálogo de Unidades.</p>
     </Container>
   )
 }
 
-export default BoothsCatalog
+export default UnitsPage
