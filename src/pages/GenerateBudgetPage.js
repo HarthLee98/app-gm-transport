@@ -8,6 +8,7 @@ import {
   Dropdown,
   Input,
   Button,
+  Message
 } from 'semantic-ui-react'
 
 const GenerateBudgetPage = () => {
@@ -18,6 +19,8 @@ const GenerateBudgetPage = () => {
     departure_date_time: '',
     return_date_time: '',
   })
+  const [errors, setErrors] = useState({})
+  const [success, setSuccess] = useState(false)
 
   const travelTypeOpts = [
     { text: 'Una Dirección', value: 'Una Dirección' },
@@ -26,11 +29,49 @@ const GenerateBudgetPage = () => {
 
   const handleChange = (e, { name, value }) => {
     setFormData({ ...formData, [name]: value })
+    setErrors({ ...errors, [name]: false }) // Limpiar error al escribir
+  }
+
+  const validateFields = () => {
+    const newErrors = {}
+    if (!formData.travel_type) {
+      newErrors.travel_type = 'El tipo de viaje es obligatorio.'
+    }
+    if (!formData.one_way_route.trim()) {
+      newErrors.one_way_route = 'La ruta de ida es obligatoria.'
+    }
+    if (
+      formData.travel_type === 'Viaje Redondo' &&
+      !formData.return_route.trim()
+    ) {
+      newErrors.return_route =
+        'La ruta de regreso es obligatoria para un viaje redondo.'
+    }
+    if (!formData.departure_date_time) {
+      newErrors.departure_date_time =
+        'La fecha y hora de partida son obligatorias.'
+    }
+    if (
+      formData.travel_type === 'Viaje Redondo' &&
+      !formData.return_date_time
+    ) {
+      newErrors.return_date_time =
+        'La fecha y hora de regreso son obligatorias para un viaje redondo.'
+    }
+    return newErrors
   }
 
   const handleSubmit = () => {
-    console.log('Datos del formulario:', formData)
-    // Aquí puedes enviar los datos al backend o procesarlos como sea necesario
+    const validationErrors = validateFields()
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors)
+      setSuccess(false)
+    } else {
+      console.log('Datos del formulario:', formData)
+      setErrors({})
+      setSuccess(true) // Mostrar mensaje de éxito
+      // Aquí puedes enviar los datos al backend o procesarlos como sea necesario
+    }
   }
 
   return (
@@ -43,7 +84,7 @@ const GenerateBudgetPage = () => {
           <Grid columns={2} doubling stackable>
             {/* Tipo de Viaje */}
             <Grid.Column>
-              <Form.Field>
+              <Form.Field error={!!errors.travel_type}>
                 <label>Tipo de Viaje</label>
                 <Dropdown
                   placeholder="Selecciona el tipo de viaje"
@@ -54,12 +95,23 @@ const GenerateBudgetPage = () => {
                   value={formData.travel_type}
                   onChange={handleChange}
                 />
+                {errors.travel_type && (
+                  <div
+                    style={{
+                      color: 'red',
+                      marginTop: '5px',
+                      fontSize: '0.9em',
+                    }}
+                  >
+                    {errors.travel_type}
+                  </div>
+                )}
               </Form.Field>
             </Grid.Column>
 
             {/* Ruta de Ida */}
             <Grid.Column>
-              <Form.Field>
+              <Form.Field error={!!errors.one_way_route}>
                 <label>Ruta de Ida</label>
                 <Input
                   placeholder="Ingresa la ruta de ida"
@@ -67,12 +119,23 @@ const GenerateBudgetPage = () => {
                   value={formData.one_way_route}
                   onChange={handleChange}
                 />
+                {errors.one_way_route && (
+                  <div
+                    style={{
+                      color: 'red',
+                      marginTop: '5px',
+                      fontSize: '0.9em',
+                    }}
+                  >
+                    {errors.one_way_route}
+                  </div>
+                )}
               </Form.Field>
             </Grid.Column>
 
             {/* Ruta de Regreso */}
             <Grid.Column>
-              <Form.Field>
+              <Form.Field error={!!errors.return_route}>
                 <label>Ruta de Regreso (si aplica)</label>
                 <Input
                   placeholder="Ingresa la ruta de regreso"
@@ -81,12 +144,23 @@ const GenerateBudgetPage = () => {
                   onChange={handleChange}
                   disabled={formData.travel_type !== 'Viaje Redondo'}
                 />
+                {errors.return_route && (
+                  <div
+                    style={{
+                      color: 'red',
+                      marginTop: '5px',
+                      fontSize: '0.9em',
+                    }}
+                  >
+                    {errors.return_route}
+                  </div>
+                )}
               </Form.Field>
             </Grid.Column>
 
             {/* Fecha y Hora de Partida */}
             <Grid.Column>
-              <Form.Field>
+              <Form.Field error={!!errors.departure_date_time}>
                 <label>Fecha y Hora de Partida</label>
                 <Input
                   type="datetime-local"
@@ -94,12 +168,23 @@ const GenerateBudgetPage = () => {
                   value={formData.departure_date_time}
                   onChange={handleChange}
                 />
+                {errors.departure_date_time && (
+                  <div
+                    style={{
+                      color: 'red',
+                      marginTop: '5px',
+                      fontSize: '0.9em',
+                    }}
+                  >
+                    {errors.departure_date_time}
+                  </div>
+                )}
               </Form.Field>
             </Grid.Column>
 
             {/* Fecha y Hora de Regreso */}
             <Grid.Column>
-              <Form.Field>
+              <Form.Field error={!!errors.return_date_time}>
                 <label>Fecha y Hora de Regreso</label>
                 <Input
                   type="datetime-local"
@@ -108,6 +193,17 @@ const GenerateBudgetPage = () => {
                   onChange={handleChange}
                   disabled={formData.travel_type !== 'Viaje Redondo'}
                 />
+                {errors.return_date_time && (
+                  <div
+                    style={{
+                      color: 'red',
+                      marginTop: '5px',
+                      fontSize: '0.9em',
+                    }}
+                  >
+                    {errors.return_date_time}
+                  </div>
+                )}
               </Form.Field>
             </Grid.Column>
           </Grid>
@@ -119,6 +215,15 @@ const GenerateBudgetPage = () => {
           >
             Generar Presupuesto
           </Button>
+
+          {success && (
+            <Message
+              success
+              header="Presupuesto generado con éxito"
+              content="Los datos han sido enviados correctamente."
+              style={{ marginTop: '20px' }}
+            />
+          )}
         </Form>
       </Segment>
     </Container>
