@@ -39,3 +39,38 @@ export const createRoute = async (item) => {
     throw error
   }
 }
+
+export const getRoutes = async () => {
+  try {
+    const token = localStorage.getItem('token')
+    const response = await fetch(`${API_URL}/route/get_routes`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: errorData.message || 'Error al obtener las rutas.',
+      })
+      throw new Error(errorData.message || 'Error al obtener las rutas.')
+    }
+
+    const data = await response.json()
+
+    return data // Devuelve los registros obtenidos
+  } catch (error) {
+    console.error('Error al obtener las rutas:', error.message)
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'Ocurrió un problema al intentar obtener las rutas. Por favor, inténtalo de nuevo.',
+    })
+    throw error
+  }
+}
