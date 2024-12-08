@@ -1,6 +1,13 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Container, Header } from 'semantic-ui-react'
+import {
+  Button,
+  Container,
+  Header,
+  Grid,
+  Icon,
+  Segment,
+} from 'semantic-ui-react'
 
 function Home() {
   const navigate = useNavigate()
@@ -17,10 +24,84 @@ function Home() {
       <Header as="h1" color="blue">
         Bienvenido a GM Transport
       </Header>
-      <p>Esta es una página sencilla de inicio.</p>
-      <Button color="blue" onClick={handleLogout}>
+      <Button
+        color="blue"
+        onClick={handleLogout}
+        style={{ marginBottom: '20px' }}
+      >
         Cerrar Sesión
       </Button>
+
+      {/* Grid de Catálogos */}
+      <Segment style={{ marginTop: '50px', padding: '20px' }}>
+        <Grid columns={3} doubling stackable>
+          {/* Catálogo de Rutas */}
+          <Grid.Column textAlign="center">
+            <div
+              onClick={() => navigate('/routes_catalog')}
+              style={{ cursor: 'pointer' }}
+            >
+              <Icon name="road" size="huge" color="blue" />
+              <Header as="h3">Catálogo de Rutas</Header>
+            </div>
+          </Grid.Column>
+
+          {/* Catálogo de Casetas */}
+          <Grid.Column textAlign="center">
+            <div
+              onClick={() => navigate('/booths_catalog')}
+              style={{ cursor: 'pointer' }}
+            >
+              <Icon name="building" size="huge" color="teal" />
+              <Header as="h3">Catálogo de Casetas</Header>
+            </div>
+          </Grid.Column>
+
+          {/* Catálogo de Unidades */}
+          <Grid.Column textAlign="center">
+            <div
+              onClick={() => navigate('/units_catalog')}
+              style={{ cursor: 'pointer' }}
+            >
+              <Icon name="truck" size="huge" color="orange" />
+              <Header as="h3">Catálogo de Unidades</Header>
+            </div>
+          </Grid.Column>
+
+          {/* Catálogo de Precios de Combustible */}
+          <Grid.Column textAlign="center">
+            <div
+              onClick={() => navigate('/fuel_catalog')}
+              style={{ cursor: 'pointer' }}
+            >
+              <Icon name="tint" size="huge" color="black" />
+              <Header as="h3">Catálogo de Precios de Combustible</Header>
+            </div>
+          </Grid.Column>
+
+          {/* Generar Presupuesto */}
+          <Grid.Column textAlign="center">
+            <div
+              onClick={() => navigate('/generate_budget')}
+              style={{ cursor: 'pointer' }}
+            >
+              <Icon name="calculator" size="huge" color="purple" />
+              <Header as="h3">Generar Presupuesto</Header>
+            </div>
+          </Grid.Column>
+
+          {/* Reportes */}
+          <Grid.Column textAlign="center">
+            <div
+              onClick={() => navigate('/reportes')}
+              style={{ cursor: 'pointer' }}
+            >
+              <Icon name="chart bar" size="huge" color="red" />
+              <Header as="h3">Reportes</Header>
+            </div>
+          </Grid.Column>
+        </Grid>
+      </Segment>
     </Container>
   )
 }
