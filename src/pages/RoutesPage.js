@@ -7,8 +7,8 @@ import {
   Form,
   Input,
   Button,
-  Message,
 } from 'semantic-ui-react'
+import { createRoute } from '../store/actions/routes_catalog'
 
 function RoutesPage() {
   const [formData, setFormData] = useState({
@@ -16,7 +16,6 @@ function RoutesPage() {
     name: '',
   })
   const [errors, setErrors] = useState({}) // Estado para almacenar errores
-  const [success, setSuccess] = useState(false) // Estado para mostrar éxito
 
   const handleChange = (e, { name, value }) => {
     setFormData({ ...formData, [name]: value })
@@ -34,16 +33,17 @@ function RoutesPage() {
     return newErrors
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const validationErrors = validateFields()
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors)
-      setSuccess(false)
     } else {
-      console.log('Datos de la Ruta:', formData)
-      setErrors({})
-      setSuccess(true) // Muestra mensaje de éxito
-      // Aquí puedes enviar los datos al backend o procesarlos como sea necesario
+      try {
+        await createRoute(formData) // Llama a la acción con los datos del formulario
+        setFormData({ code: '', name: '' }) // Limpia los campos del formulario
+      } catch (error) {
+        console.error('Error al guardar la ruta:', error.message)
+      }
     }
   }
 
@@ -111,15 +111,6 @@ function RoutesPage() {
           >
             Guardar Ruta
           </Button>
-
-          {success && (
-            <Message
-              success
-              header="Ruta guardada con éxito"
-              content="Los datos de la ruta se han almacenado correctamente."
-              style={{ marginTop: '20px' }}
-            />
-          )}
         </Form>
       </Segment>
     </Container>
