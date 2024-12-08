@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Header, Tab, Table } from 'semantic-ui-react'
+import { Header, Tab, Table, Popup, Icon } from 'semantic-ui-react'
 import { getRoutes } from '../store/actions/routes_catalog' // Importa la acción
 import PageLayout from '../components/PageLayout'
 
@@ -32,7 +32,30 @@ function ReportsPage() {
       <Table.Body>
         {routes.map((route) => (
           <Table.Row key={route.id}>
-            <Table.Cell>{}</Table.Cell>
+            <Table.Cell>
+              <Popup
+                content="Editar"
+                trigger={
+                  <Icon
+                    name="edit"
+                    color="blue"
+                    style={{ cursor: 'pointer', marginRight: '10px' }}
+                    onClick={() => console.log('Editar:', route.id)} // Aquí pondrás la función de editar
+                  />
+                }
+              />
+              <Popup
+                content="Eliminar"
+                trigger={
+                  <Icon
+                    name="trash alternate"
+                    color="red"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => console.log('Eliminar:', route.id)} // Aquí pondrás la función de eliminar
+                  />
+                }
+              />
+            </Table.Cell>
             <Table.Cell>{route.code}</Table.Cell>
             <Table.Cell>{route.name}</Table.Cell>
           </Table.Row>
