@@ -6,7 +6,7 @@ import PageLayout from '../components/PageLayout'
 
 function BoothsPage() {
   const location = useLocation()
-  const boothData = location.state?.booth // Datos de la caseta para edición
+  const boothData = location.state?.item // Datos de la caseta para edición
 
   const [formData, setFormData] = useState({
     code: boothData?.code || '',

@@ -6,7 +6,7 @@ import PageLayout from '../components/PageLayout'
 
 function RoutesPage() {
   const location = useLocation()
-  const routeData = location.state?.route // Datos de la ruta para edición
+  const routeData = location.state?.item // Datos de la ruta para edición
 
   const [formData, setFormData] = useState({
     code: routeData?.code || '',
