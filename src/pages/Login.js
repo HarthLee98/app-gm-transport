@@ -8,35 +8,45 @@ import {
   Message,
   Image,
 } from 'semantic-ui-react'
-import logo from '../images/logo-gmt.png' // Asegúrate de que la ruta sea correcta
+import { useNavigate } from 'react-router-dom'
+import { getLoginUser } from '../store/actions/users'
+import logo from '../images/logo-gmt.png'
 
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [emailError, setEmailError] = useState(false)
+  const [error, setError] = useState('')
+  const [emailTouched, setEmailTouched] = useState(false)
+
+  const navigate = useNavigate()
 
   const handleEmailChange = (e) => {
     const value = e.target.value
     setEmail(value)
 
-    // Validación del formato de correo
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     setEmailError(!emailRegex.test(value))
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!emailError && email && password) {
-      console.log('Correo:', email)
-      console.log('Contraseña:', password)
+      const item = { email, password }
+
+      try {
+        await getLoginUser(item)
+        navigate('/home') // Redirige a la página de inicio
+      } catch (err) {
+        setError('Usuario y/o Contraseña inválida, intente de nuevo.')
+      }
     } else {
-      console.error('Formulario inválido')
+      setError('Por favor completa todos los campos correctamente.')
     }
   }
 
   return (
     <Grid textAlign="center" style={{ height: '100vh' }} verticalAlign="middle">
       <Grid.Column style={{ maxWidth: 450 }}>
-        {/* Logo */}
         <Image
           src={logo}
           alt="Logo GM Transport"
@@ -44,14 +54,11 @@ function Login() {
           centered
           style={{ marginBottom: '20px' }}
         />
-        {/* Encabezado */}
         <Header as="h2" color="blue" textAlign="center">
           Iniciar Sesión
         </Header>
-        {/* Formulario */}
         <Form size="large" onSubmit={(e) => e.preventDefault()}>
           <Segment stacked>
-            {/* Input del correo */}
             <Form.Input
               fluid
               icon="user"
@@ -60,15 +67,17 @@ function Login() {
               type="email"
               value={email}
               onChange={handleEmailChange}
+              onBlur={() => setEmailTouched(true)} // Cambia el estado al perder el foco
               required
               error={
-                emailError && {
+                emailError &&
+                emailTouched && {
+                  // Muestra el mensaje solo si el campo ha sido tocado
                   content: 'Por favor, escribe un correo válido.',
                   pointing: 'below',
                 }
               }
             />
-            {/* Input de la contraseña */}
             <Form.Input
               fluid
               icon="lock"
@@ -79,7 +88,6 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            {/* Botón de enviar */}
             <Button
               color="blue"
               fluid
@@ -91,8 +99,14 @@ function Login() {
             </Button>
           </Segment>
         </Form>
+        {error && (
+          <Message error>
+            <Message.Header>Error</Message.Header>
+            <p>{error}</p>
+          </Message>
+        )}
         <Message>
-          ¿No tienes una cuenta? <a href="#!">Regístrate</a>
+          ¿No tienes una cuenta? <a href="/register">Regístrate</a>
         </Message>
       </Grid.Column>
     </Grid>
