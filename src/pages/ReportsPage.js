@@ -11,13 +11,15 @@ import {
 import { useNavigate } from 'react-router-dom'
 import { getRoutes, deleteRoute } from '../store/actions/routes_catalog'
 import { getBooths, deleteBooth } from '../store/actions/booths'
+import { getUnits, deleteUnit } from '../store/actions/units'
 import PageLayout from '../components/PageLayout'
 
 function ReportsPage() {
   const [routes, setRoutes] = useState([])
   const [booths, setBooths] = useState([])
+  const [units, setUnits] = useState([])
   const [modalOpen, setModalOpen] = useState(false)
-  const [selectedItem, setSelectedItem] = useState(null) // Estado genérico para rutas o casetas
+  const [selectedItem, setSelectedItem] = useState(null)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -27,6 +29,8 @@ function ReportsPage() {
         setRoutes(routesData)
         const boothsData = await getBooths()
         setBooths(boothsData)
+        const unitsData = await getUnits()
+        setUnits(unitsData)
       } catch (error) {
         console.error('Error al obtener datos:', error.message)
       }
@@ -36,7 +40,7 @@ function ReportsPage() {
   }, [])
 
   const handleOpenModal = (item, type) => {
-    setSelectedItem({ ...item, type }) // Agregar el tipo para manejar dinámicamente
+    setSelectedItem({ ...item, type })
     setModalOpen(true)
   }
 
@@ -57,6 +61,9 @@ function ReportsPage() {
         setBooths((prev) =>
           prev.filter((booth) => booth.id !== selectedItem.id)
         )
+      } else if (selectedItem?.type === 'unit') {
+        await deleteUnit(selectedItem.id)
+        setUnits((prev) => prev.filter((unit) => unit.id !== selectedItem.id))
       }
       handleCloseModal()
     } catch (error) {
@@ -111,7 +118,7 @@ function ReportsPage() {
   const panes = [
     { menuItem: 'Rutas', render: () => renderTable(routes, 'route') },
     { menuItem: 'Casetas', render: () => renderTable(booths, 'booth') },
-    { menuItem: 'Unidades', render: () => <></> },
+    { menuItem: 'Unidades', render: () => renderTable(units, 'unit') },
     { menuItem: 'Precios de combustible', render: () => <></> },
     { menuItem: 'Presupuestos', render: () => <></> },
   ]
@@ -129,8 +136,12 @@ function ReportsPage() {
         <Modal.Content>
           <p>
             ¿Estás seguro de que deseas eliminar{' '}
-            {selectedItem?.type === 'route' ? 'la ruta' : 'la caseta'} "
-            {selectedItem?.name}"?
+            {selectedItem?.type === 'route'
+              ? 'la ruta'
+              : selectedItem?.type === 'booth'
+              ? 'la caseta'
+              : 'la unidad'}{' '}
+            "{selectedItem?.name}"?
           </p>
         </Modal.Content>
         <Modal.Actions>
